@@ -1,0 +1,27 @@
+#!/bin/bash
+#komentarze
+
+data=$(date +%Y%m%d%H%M%S)
+
+sudo touch ListOfUsers_$data.txt
+sudo chmod 777 ListOfUsers_$data.txt
+awk -F':' '{ print $1}' /etc/passwd >> ListOfUsers_$data.txt
+
+sudo touch ListOfGroups_$data.txt
+sudo chmod 777 ListOfGroups_$data.txt
+awk -F':' '{print $1}' /etc/group >> ListOfGroups_$data.txt
+
+sudo touch ListOfFireWall_$data.txt
+sudo chmod 777 ListOfFireWall_$data.txt
+sudo iptables -vL -t mangle >> ListOfFireWall_$data.txt
+
+sudo touch ListOfServices_$data.txt
+sudo chmod 777 ListOfServices_$data.txt
+sudo netstat -ltnp --numeric-port >> ListOfServices_$data.txt
+
+sudo touch ListOfProcess_$data.txt
+sudo chmod 777 ListOfProcess_$data.txt
+ps -aux | less >> ListOfProcess_$data.txt
+
+sudo mkdir inwentaryzacja_$data
+sudo mv *.txt inwentaryzacja_$data
